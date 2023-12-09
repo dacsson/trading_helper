@@ -1,4 +1,5 @@
 "use client"
+import {useState} from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 interface GraphProps
@@ -14,8 +15,8 @@ export default function Graph({uData, pData,  labelDates, buyData, sellData} : G
 {
 //     const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
 //   const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-  const xLabels = labelDates
-
+    const xLabels = labelDates
+    const [loading, setLoading] = useState<boolean>(false)
     return(
         <LineChart
             sx={{

@@ -7,6 +7,7 @@ import Graph from '@/components/Graph';
 import { motion } from 'framer-motion';
 import InputSelector from './InputSelector';
 import InfoCard from './InfoCard';
+import { CircularProgress } from '@mui/material';
 
 export default function MainBody() 
 {
@@ -21,6 +22,15 @@ export default function MainBody()
     const [days, setDays] = useState<Array<number>>([0, 0])
     const [sellData, setSellData] = useState<Array<number>>([0, 0, 0, 0, 0])
     const [buyData, setBuyData] = useState<Array<number>>([0, 0, 0, 0, 0])
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleLoading = () =>
+    {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 5500)
+    }
 
     const get_graph_data = () =>
     {
@@ -76,9 +86,9 @@ export default function MainBody()
                 console.log(JSON.stringify("data info: ", data))
                 var arr = new Array
                 setPSuccesss([pSuccess[0], data[0][0]])
-                setPProfit([pProfit[0], data[0][0]])
-                setDate([date[0], data[0][0]])
-                setDays([days[0], data[0][0]])
+                setPProfit([pProfit[0], data[0][1]])
+                setDate([date[0], data[0][2]])
+                setDays([days[0], data[0][3]])
                 console.log("vars data sell: ", pSuccess, pProfit, date, days)
             }
             else {
@@ -102,6 +112,7 @@ export default function MainBody()
             console.log(buyData)
         })
 
+        
         fetch(`http://127.0.0.1:5000/get_sell_graph_data?ticker=${ticker}&indicator=${indic}`)
         .then(res => res.json())
         .then(data => {
@@ -143,7 +154,7 @@ export default function MainBody()
                 animate={{ x: 0 }}
                 transition={{ type: "spring", stiffness: 100, damping: 15 }}
             >
-                <InputSelector ticker={ticker} setTicker={setTicker} indic={indic} setIndic={setIndic} onStartAnalysis={get_graph_data} onAnalyseData={get_info_data}/>
+                <InputSelector ticker={ticker} setTicker={setTicker} indic={indic} setIndic={setIndic} onStartAnalysis={get_graph_data} onAnalyseData={get_info_data} onLoading={handleLoading}/>
             </motion.div>
           </Grid>
           <Grid xl={6}>
@@ -156,7 +167,15 @@ export default function MainBody()
                     <b>Анализ акций {ticker} за период 30 дней</b>
                 </Typography>
                 <Paper elevation={0} sx={{ pb: 3, pt: 3}} style={{ position: "relative", borderRadius: 25, border: "1px solid #ADADAD00" }}>
-                    <Graph pData={tickerData} uData={tickerData} labelDates={labelDates} buyData={buyData} sellData={sellData}/>
+                    {
+                        loading
+                        ?
+                        <Paper elevation={0} sx={{ pb: 3, pt: 3, height: "350px"}} style={{ position: "relative", borderRadius: 25, border: "1px solid #ADADAD00", marginTop: "48px", display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress sx={{ mt: 15 }}/>
+                        </Paper>
+                        :
+                        <Graph pData={tickerData} uData={tickerData} labelDates={labelDates} buyData={buyData} sellData={sellData}/>
+                    }
                 </Paper>
             </motion.div>
           </Grid>
@@ -166,7 +185,16 @@ export default function MainBody()
                 animate={{ x: 0 }}
                 transition={{ type: "spring", stiffness: 100, damping: 15 }}
             >
-                <InfoCard ticker={ticker} indic={indic.toUpperCase()} pProfit={pProfit} pSuccess={pSuccess} date={date} days={days}/>
+                    {
+                        loading
+                        ?
+                        <Paper elevation={0} sx={{ pb: 3, pt: 3, height: "450px"}} style={{ position: "relative", borderRadius: 25, border: "1px solid #ADADAD00", marginTop: "48px", display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress sx={{ mt: 20 }}/>
+                        </Paper>
+                        :
+                        <InfoCard ticker={ticker} indic={indic.toUpperCase()} pProfit={pProfit} pSuccess={pSuccess} date={date} days={days}/>
+                    }
+               
             </motion.div>
           </Grid>
         </Grid>

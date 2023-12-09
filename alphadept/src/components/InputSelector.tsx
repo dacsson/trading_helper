@@ -21,12 +21,13 @@ interface InputSelector
     setIndic: Function;
     onStartAnalysis: Function;
     onAnalyseData: Function;
+    onLoading: Function;
 }
 
 const tickers = ['POLY', 'FIVE', 'GAZP', 'GMKN', 'LKOH', 'MGNT', 'MTSS', 'NLMK', 'NVTK', 'PLZL', 'ROSN', 'SBER', 'SNGS', 'TATN', 'YNDX'];
 const indics = ['rsi', 'willr', 'stochrsi', 'aroon', 'ao'];
 
-export default function InputSelector({ticker, setTicker, indic, setIndic, onStartAnalysis, onAnalyseData} : InputSelector)
+export default function InputSelector({ticker, setTicker, indic, setIndic, onStartAnalysis, onAnalyseData, onLoading} : InputSelector)
 {
 
     const [open, setOpen] = useState<boolean>(false);
@@ -70,6 +71,7 @@ export default function InputSelector({ticker, setTicker, indic, setIndic, onSta
     const handleStart = () => {
         onStartAnalysis()
         onAnalyseData()
+        onLoading()
     }
 
     return(

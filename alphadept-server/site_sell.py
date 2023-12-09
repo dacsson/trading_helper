@@ -79,7 +79,7 @@ class StockPredictor_sell:
 
         mse = mean_squared_error(y_test, predictions)
         rmse = np.sqrt(mse)
-        accuracy = accuracy_score(y_test1, (prob_predictions < 0.5).astype(int))
+        accuracy = accuracy_score(y_test1, (prob_predictions > 0.5).astype(int))
 
         return accuracy, rmse, model, logistic_model
 
@@ -103,7 +103,7 @@ class StockPredictor_sell:
         predictions = model.predict(subset)
         prob_predictions = logistic_model.predict_proba(subset)[:, 1]
 
-        indices_above_threshold = np.where(prob_predictions < 0.45)[0]
+        indices_above_threshold = np.where(prob_predictions > 0.49)[0]
 
         out = []
         subset['sell'] = False  # Создаем столбец 'sell' и инициализируем его значением False
