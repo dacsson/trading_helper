@@ -1,5 +1,3 @@
-#!/home/No2rmal/.virtualenvs/myenv/bin python3
-
 import argparse
 from moexalgo import Ticker
 import pandas as pd

@@ -10,8 +10,6 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# Получаем данные для графика время и цена
-# Обращаемся так - python site10.py -ticker SBER
 @app.route('/get_graph_data', methods=['GET'])
 @cross_origin()
 def get_graph_data():
@@ -41,8 +39,6 @@ def get_info_data():
 
     return jsonify(json.loads(data))
 
-# Получаем данные для графика и True если есть сигнал о покупке
-# Обращаемся так - python site10.py -ticker SBER -indicator rsi
 @app.route('/get_bay_data', methods=['GET'])
 @cross_origin()
 def get_bay_data():
@@ -73,8 +69,6 @@ def get_bay_graph_data():
 
     return jsonify(subset)
 
-# Получаем данные для графика и True если есть сигнал о продаже
-# Обращаемся так - python site10.py -ticker SBER -indicator rsi
 @app.route('/get_sell_data', methods=['GET'])
 @cross_origin()
 def get_sell_data():
